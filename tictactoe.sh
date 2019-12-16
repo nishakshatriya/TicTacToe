@@ -12,11 +12,20 @@ function resettingBoard(){
 
 function gettingSymbols(){
 	resettingBoard
-	if [ $((RANDOM%2)) -eq 1 ]
+	getSymbol=$((RANDOM%2))
+	if [ $getSymbol -eq 1 ]
 	then
 		echo "Player got 'X' symbol"
 	else
 		echo "Player got 'O' symbol"
 	fi
 }
-gettingSymbols
+
+function toss(){
+	gettingSymbols
+	if [ $getSymbol -eq 1 ]
+	then
+		echo "Player will start First"
+	fi
+}
+toss
