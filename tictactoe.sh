@@ -15,17 +15,42 @@ function gettingSymbols(){
 	getSymbol=$((RANDOM%2))
 	if [ $getSymbol -eq 1 ]
 	then
-		echo "Player got 'X' symbol"
+		echo "Player1 got 'X' symbol"
+		echo "Player1 will start"
 	else
-		echo "Player got 'O' symbol"
+		echo "Player2 got 'X' symbol"
+		echo "Player2 will start"
 	fi
 }
 
-function toss(){
-	gettingSymbols
-	if [ $getSymbol -eq 1 ]
-	then
-		echo "Player will start First"
-	fi
+function displayingBoard(){
+echo " __________"
+echo "|_${gameBoard[0]}_|_${gameBoard[1]}_|_${gameBoard[2]}|"
+echo "|_${gameBoard[3]}_|_${gameBoard[4]}_|_${gameBoard[5]}|"
+echo "|_${gameBoard[6]}_|_${gameBoard[7]}_|_${gameBoard[8]}|"
 }
-toss
+
+function givingCellInput(){
+	counter=0
+	for(( i=0; i<9; i++ ))
+	do
+		read -p "enter cell number:" cellNumber
+		if [[ ${gameBoard[$i]} -eq $cellNumber ]]
+		then
+			   gameBoard[$(($cellNumber - 1))]="X"
+			  counter=$(($counter+1))
+			  displayingBoard
+		else
+			echo "Cant Print on that index"
+		fi
+	done
+}
+
+function calculate(){
+	while [[ $counter -ne 9 ]]
+	do
+		gettingSymbols
+		givingCellInput
+	done
+}
+calculate
