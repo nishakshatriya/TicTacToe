@@ -11,7 +11,6 @@ function resettingBoard(){
 }
 
 function gettingSymbols(){
-	resettingBoard
 	getSymbol=$((RANDOM%2))
 	if [ $getSymbol -eq 1 ]
 	then
@@ -24,10 +23,10 @@ function gettingSymbols(){
 }
 
 function displayingBoard(){
-echo " __________"
-echo "|_${gameBoard[0]}_|_${gameBoard[1]}_|_${gameBoard[2]}|"
-echo "|_${gameBoard[3]}_|_${gameBoard[4]}_|_${gameBoard[5]}|"
-echo "|_${gameBoard[6]}_|_${gameBoard[7]}_|_${gameBoard[8]}|"
+	echo " __________"
+	echo "|_${gameBoard[0]}_|_${gameBoard[1]}_|_${gameBoard[2]}|"
+	echo "|_${gameBoard[3]}_|_${gameBoard[4]}_|_${gameBoard[5]}|"
+	echo "|_${gameBoard[6]}_|_${gameBoard[7]}_|_${gameBoard[8]}|"
 }
 
 function givingCellInput(){
@@ -37,9 +36,9 @@ function givingCellInput(){
 		read -p "enter cell number:" cellNumber
 		if [[ ${gameBoard[$i]} -eq $cellNumber ]]
 		then
-			   gameBoard[$(($cellNumber - 1))]="X"
-			  counter=$(($counter+1))
-			  displayingBoard
+			gameBoard[$(($cellNumber - 1))]="X"
+			counter=$(($counter+1))
+			displayingBoard
 		else
 			echo "Cant Print on that index"
 		fi
