@@ -2,6 +2,7 @@
 
 declare -r TRUE=1
 declare -r FALSE=0
+
 echo "Welcome to TIC-TAC-TOE Game"
 
 function resettingBoard(){
@@ -33,19 +34,16 @@ function displayingBoard(){
 }
 
 function givingCellInput(){
-counter=0
-
+	counter=0
 	read -p "enter cell number:" cellNumber
-
-			gameBoard[$(($cellNumber-1))]="X"
-			counter=$(($counter+1))
-			displayingBoard
-
+	gameBoard[$(($cellNumber-1))]="X"
+	counter=$(($counter+1))
+	displayingBoard
 }
 
 function checkingRowsForWinning(){
-temp=0
-for((i=0; i<=8; i++))
+	temp=0
+	for((i=0; i<=8; i++))
 	do
 		if [[ ${gameBoard[$i]} == "X" && ${gameBoard[$(($i+1))]} == "X" && ${gameBoard[$(($i+2))]} == "X" ]]
 		then
@@ -53,49 +51,43 @@ for((i=0; i<=8; i++))
 			break
 		else
 			temp=$FALSE
-	fi
+		fi
 	done
 	echo $temp
 }
 
 function checkingColForWinning(){
-temp1=0
-for((i=0; i<=8; i++))
+	temp1=0
+	for((i=0; i<=8; i++))
 	do
-	if [[ ${gameBoard[$i]} == "X" && ${gameBoard[$(($i+3))]} == "X" && ${gameBoard[$(($i+6))]} == "X" ]]
-	then
-		temp1=$TRUE
-		break
-	else
-		temp1=$FALSE
-	fi
+		if [[ ${gameBoard[$i]} == "X" && ${gameBoard[$(($i+3))]} == "X" && ${gameBoard[$(($i+6))]} == "X" ]]
+		then
+			temp1=$TRUE
+			break
+		else
+			temp1=$FALSE
+		fi
 	done
 	echo $temp1
 }
 
 function checkingDiagForWinning(){
-temp2=0
-i=0
-#	for((i=0; i<=8; i++))
-#	do
-		if [[ ${gameBoard[$i]} == "X" && ${gameBoard[$(($i+4))]} == "X" && ${gameBoard[$(($i+8))]} == "X" ]]
-		then
-			temp2=$TRUE
-		elif [[ ${gameBoard[$(($i+2))]} == "X" && ${gameBoard[$(($i+4))]} == "X" && ${gameBoard[$(($i+6))]} == "X" ]]
-		then
-			temp2=$TRUE
-		fi
-#	done
+	temp2=0
+	i=0
+	if [[ ${gameBoard[$i]} == "X" && ${gameBoard[$(($i+4))]} == "X" && ${gameBoard[$(($i+8))]} == "X" ]]
+	then
+		temp2=$TRUE
+	elif [[ ${gameBoard[$(($i+2))]} == "X" && ${gameBoard[$(($i+4))]} == "X" && ${gameBoard[$(($i+6))]} == "X" ]]
+	then
+		temp2=$TRUE
+	fi
 	echo $temp2
 }
 
 function calculate(){
 	gettingSymbols
 	counter=0
-	#r=0
-	#c=0
-	#d=0
-	while [ $counter -ne 9 ]  #&& [ $r -ne 1 ] && [ $c -ne 1 ] && [ $d -ne 1 ]
+	while [ $counter -ne 9 ]
 	do
 		givingCellInput
 		echo "before win checker"
