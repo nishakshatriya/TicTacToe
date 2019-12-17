@@ -9,6 +9,7 @@ function resettingBoard(){
 	echo 	" ${gameBoard[3]} ${gameBoard[4]} ${gameBoard[5]} "
 	echo 	" ${gameBoard[6]} ${gameBoard[7]} ${gameBoard[8]} "
 }
+resettingBoard
 
 function gettingSymbols(){
 	getSymbol=$((RANDOM%2))
@@ -30,19 +31,22 @@ function displayingBoard(){
 }
 
 function givingCellInput(){
-	counter=0
+counter=0
+	while [ $counter -ne 9 ]
+	do
+	read -p "enter cell number:" cellNumber
 	for(( i=0; i<9; i++ ))
 	do
-		read -p "enter cell number:" cellNumber
 		if [[ ${gameBoard[$i]} -eq $cellNumber ]]
 		then
-			gameBoard[$(($cellNumber - 1))]="X"
+			gameBoard[$(($cellNumber-1))]="X"
 			counter=$(($counter+1))
 			displayingBoard
-		else
-			echo "Cant Print on that index"
+		#else
+		#	echo "Cant Print on that index"
 		fi
 	done
+done
 }
 
 function calculate(){
