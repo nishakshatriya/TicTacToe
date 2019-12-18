@@ -1,16 +1,22 @@
 #!/bin/bash/ -x
 
-declare -r TRUE=1
-declare -r FALSE=0
+#CONSTANT
+ TRUE=1
+ FALSE=0
+ POSITIVE=2
+
+#variables
+turn=" "
+counter=0
 
 echo "Welcome to TIC-TAC-TOE Game"
 
 function resettingBoard(){
 	gameBoard=( 1 2 3 4 5 6 7 8 9 )
-
-	echo	" ${gameBoard[0]} ${gameBoard[1]} ${gameBoard[2]} "
-	echo 	" ${gameBoard[3]} ${gameBoard[4]} ${gameBoard[5]} "
-	echo 	" ${gameBoard[6]} ${gameBoard[7]} ${gameBoard[8]} "
+	echo " __________"
+	echo "|_${gameBoard[0]}_|_${gameBoard[1]}_|_${gameBoard[2]}|"
+   echo "|_${gameBoard[3]}_|_${gameBoard[4]}_|_${gameBoard[5]}|"
+   echo "|_${gameBoard[6]}_|_${gameBoard[7]}_|_${gameBoard[8]}|"
 }
 resettingBoard
 
@@ -18,11 +24,11 @@ function gettingSymbols(){
 	getSymbol=$((RANDOM%2))
 	if [ $getSymbol -eq 1 ]
 	then
-		echo "Player1 got 'X' symbol"
-		echo "Player1 will start"
+		turn="User"
+		echo "Player got 'X' symbol & Player will start first!"
 	else
-		echo "Player2 got 'X' symbol"
-		echo "Player2 will start"
+		turn="Computer"
+		echo "Computer got 'O' symbol & Computer will start first!"
 	fi
 }
 
@@ -34,11 +40,36 @@ function displayingBoard(){
 }
 
 function givingCellInput(){
-	counter=0
+	echo "user"
 	read -p "enter cell number:" cellNumber
-	gameBoard[$(($cellNumber-1))]="X"
-	counter=$(($counter+1))
-	displayingBoard
+	for((i=0; i<=8; i++))
+	do
+		if [[ ${gameBoard[$i]} -eq $cellNumber ]]
+		then
+			gameBoard[$(($cellNumber-1))]="X"
+			counter=$(($counter+1))
+			displayingBoard
+		fi
+		turn="Computer"
+	done
+
+}
+
+function givingComputerInput(){
+	echo "computer"
+	cellNumber=$((RANDOM%9+1))
+	for((i=0; i<=8; i++))
+	do
+		if [[ ${gameBoard[$i]} -eq $cellNumber ]]
+		then
+			gameBoard[$(($cellNumber-1))]="O"
+         counter=$(($counter+1))
+         turn="User"
+         displayingBoard
+         break
+		fi
+		turn="Computer"
+	done
 }
 
 function checkingRowsForWinning(){
@@ -48,6 +79,10 @@ function checkingRowsForWinning(){
 		if [[ ${gameBoard[$i]} == "X" && ${gameBoard[$(($i+1))]} == "X" && ${gameBoard[$(($i+2))]} == "X" ]]
 		then
 			temp=$TRUE
+			break
+		elif [[ ${gameBoard[$i]} == "O" && ${gameBoard[$(($i+1))]} == "O" && ${gameBoard[$(($i+2))]} == "O" ]]
+		then
+			temp=$POSITIVE
 			break
 		else
 			temp=$FALSE
@@ -63,6 +98,10 @@ function checkingColForWinning(){
 		if [[ ${gameBoard[$i]} == "X" && ${gameBoard[$(($i+3))]} == "X" && ${gameBoard[$(($i+6))]} == "X" ]]
 		then
 			temp1=$TRUE
+			break
+		elif [[ ${gameBoard[$i]} == "O" && ${gameBoard[$(($i+3))]} == "O" && ${gameBoard[$(($i+6))]} == "O" ]]
+		then
+			temp1=$POSITIVE
 			break
 		else
 			temp1=$FALSE
@@ -80,26 +119,42 @@ function checkingDiagForWinning(){
 	elif [[ ${gameBoard[$(($i+2))]} == "X" && ${gameBoard[$(($i+4))]} == "X" && ${gameBoard[$(($i+6))]} == "X" ]]
 	then
 		temp2=$TRUE
+	elif [[ ${gameBoard[$(($i))]} == "O" && ${gameBoard[$(($i+4))]} == "O" && ${gameBoard[$(($i+8))]} == "O" ]]
+	then
+		temp2=$POSITIVE
+	elif [[ ${gameBoard[$(($i+2))]} == "O" && ${gameBoard[$(($i+4))]} == "O" && ${gameBoard[$(($i+8))]} == "O" ]]
+	then
+		temp2=$POSITIVE
+	else
+		temp2=$FALSE
 	fi
 	echo $temp2
 }
 
-function calculate(){
+function playingTicTacToe(){
 	gettingSymbols
 	counter=0
 	while [ $counter -ne 9 ]
 	do
-		givingCellInput
-		echo "before win checker"
-		r=$(checkingRowsForWinning)
-		c=$(checkingColForWinning)
-		d=$(checkingDiagForWinning)
-		if [[ $r -eq 1 || $c -eq 1 || $d -eq 1 ]]
+		if [[ $turn == "Computer" ]]
 		then
-			echo "You Win"
+			givingComputerInput
+		else
+			givingCellInput
+		fi
+		rows=$(checkingRowsForWinning)
+		cols=$(checkingColForWinning)
+		diag=$(checkingDiagForWinning)
+		if [[ $rows -eq 1 || $cols -eq 1 || $diag -eq 1 ]]
+		then
+			echo "player Win!!"
+			break
+		elif [[ $rows -eq 2 || $cols -eq 2 || $diag -eq 2 ]]
+		then
+			echo "Computer win!!"
 			break
 		fi
 	done
 }
-calculate
+playingTicTacToe
 
