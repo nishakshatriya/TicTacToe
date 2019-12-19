@@ -15,8 +15,8 @@ function resettingBoard(){
 	gameBoard=( 1 2 3 4 5 6 7 8 9 )
 	echo " __________"
 	echo "|_${gameBoard[0]}_|_${gameBoard[1]}_|_${gameBoard[2]}|"
-   echo "|_${gameBoard[3]}_|_${gameBoard[4]}_|_${gameBoard[5]}|"
-   echo "|_${gameBoard[6]}_|_${gameBoard[7]}_|_${gameBoard[8]}|"
+	echo "|_${gameBoard[3]}_|_${gameBoard[4]}_|_${gameBoard[5]}|"
+	echo "|_${gameBoard[6]}_|_${gameBoard[7]}_|_${gameBoard[8]}|"
 }
 resettingBoard
 
@@ -39,6 +39,80 @@ function displayingBoard(){
 	echo "|_${gameBoard[6]}_|_${gameBoard[7]}_|_${gameBoard[8]}|"
 }
 
+function checkingOpponent(){
+	flag=0
+	for((i=0; i<=8; i++))
+	do
+		if [[ ${gameBoard[$i]} == "X" && ${gameBoard[$(($i+1))]} == "X" ]]
+		then
+			flag=1
+			echo ${gameBoard[$(($i+2))]}
+			break
+		elif [[ ${gameBoard[$(($i+1))]} == "X" && ${gameBoard[$(($i+2))]} == "X" ]]
+		then
+			flag=1
+			echo ${gameBoard[$i]} 
+			break
+		elif [[ ${gameBoard[$i]} == "X" && ${gameBoard[$(($i+2))]} == "X" ]]
+		then
+			flag=1
+			echo  ${gameBoard[$(($i+1))]}
+			break
+		elif [[ ${gameBoard[$i]} == "X" && ${gameBoard[$(($i+3))]} == "X" ]]
+		then
+			flag=1
+			echo ${gameBoard[$(($i+6))]}
+			break
+		elif [[ ${gameBoard[$(($i+3))]} == "X" && ${gameBoard[$(($i+6))]} == "X" ]]
+		then
+			flag=1
+			echo ${gameBoard[$i]}
+			break
+		elif [[ ${gameBoard[$i]} == "X" && ${gameBoard[$(($i+6))]} == "X" ]]
+		then
+			flag=1
+			echo ${gameBoard[$i+3]}
+			break
+		elif [[ ${gameBoard[$(($i+2))]} == "X" && ${gameBoard[$((i+4))]} == "X" ]]
+		then
+			flag=1
+			echo ${gameBoard[$(($i+6))]}
+		break
+		elif [[ ${gameBoard[$(($i+4))]} == "X" && ${gameBoard[$(($i+6))]} == "X" ]]
+		then
+			flag=1
+			echo ${gameBoard[$(($i+2))]}
+			break
+		elif [[ ${gameBoard[$(($i+2))]} == "X" && ${gameBoard[$(($i+6))]} == "X" ]]
+		then
+			flag=1
+			echo ${gameBoard[$(($i+4))]}
+			break
+		 elif [[ ${gameBoard[$i]} == "X" && ${gameBoard[$((i+4))]} == "X" ]]
+      then
+         flag=1
+         echo ${gameBoard[$(($i+8))]}
+      break
+      elif [[ ${gameBoard[$(($i+4))]} == "X" && ${gameBoard[$(($i+8))]} == "X" ]]
+      then
+         flag=1
+         echo ${gameBoard[$i]}
+         break
+      elif [[ ${gameBoard[$i]} == "X" && ${gameBoard[$(($i+8))]} == "X" ]]
+      then
+         flag=1
+         echo ${gameBoard[$(($i+4))]}
+         break
+
+	fi
+	done
+if [[ $flag -eq 0 ]]
+then
+	randomCell=$((RANDOM%9+1))
+	echo $randomCell
+fi
+}
+
 function givingCellInput(){
 	echo "user"
 	read -p "enter cell number:" cellNumber
@@ -52,21 +126,20 @@ function givingCellInput(){
 		fi
 		turn="Computer"
 	done
-
 }
 
 function givingComputerInput(){
 	echo "computer"
-	cellNumber=$((RANDOM%9+1))
+	cellNumber=$(checkingOpponent)
 	for((i=0; i<=8; i++))
 	do
 		if [[ ${gameBoard[$i]} -eq $cellNumber ]]
 		then
 			gameBoard[$(($cellNumber-1))]="O"
-         counter=$(($counter+1))
-         turn="User"
-         displayingBoard
-         break
+			counter=$(($counter+1))
+			turn="User"
+			displayingBoard
+			break
 		fi
 		turn="Computer"
 	done
@@ -74,7 +147,7 @@ function givingComputerInput(){
 
 function checkingRowsForWinning(){
 	temp=0
-	for((i=0; i<=8; i++))
+	for((i=0; i<=8; i=$((i+3)) ))
 	do
 		if [[ ${gameBoard[$i]} == "X" && ${gameBoard[$(($i+1))]} == "X" && ${gameBoard[$(($i+2))]} == "X" ]]
 		then
@@ -93,7 +166,7 @@ function checkingRowsForWinning(){
 
 function checkingColForWinning(){
 	temp1=0
-	for((i=0; i<=8; i++))
+	for((i=0; i<=2; i++))
 	do
 		if [[ ${gameBoard[$i]} == "X" && ${gameBoard[$(($i+3))]} == "X" && ${gameBoard[$(($i+6))]} == "X" ]]
 		then
