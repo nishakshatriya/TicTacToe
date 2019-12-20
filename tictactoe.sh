@@ -39,24 +39,38 @@ function displayingBoard(){
 	echo "|_${gameBoard[6]}_|_${gameBoard[7]}_|_${gameBoard[8]}|"
 }
 
+function checkingCenter(){
+	i=0
+	if [[ ${gameBoard[$(($i+4))]} != "X" && ${gameBoard[$(($i+4))]} != "O" ]]
+	then
+		echo	${gameBoard[$(($i+4))]}
+	else
+		randomMove=$((RANDOM%9+1))
+		echo $randomMove
+	fi
+}
+
 function checkingCorners(){
 flag=0
 for((i=0 ;i<=8 ;i++))
 do
-	number=$((${gameBoard[$i]}%2))
-	if [[ $number -eq 1 && ${gameBoard[$i]} -ne 5 ]]
-	then
-		flag=1
-		echo ${gameBoard[$i]}
+	if [[ ${gameBoard[$i]} != "X" && ${gameBoard[$i]} != "O" ]]
+	then 
+		number=$((${gameBoard[$i]}%2))
+		if [[ $number -eq 1 && ${gameBoard[$i]} -ne 5 ]]
+		then
+			flag=1
+			echo ${gameBoard[$i]}
 		break
 	fi
+fi
 done
 
-if [[ flag -eq 0 ]]
-then
-	randomMove=$((RANDOM%9+1))
-	echo $randomMove
-fi
+	if [[ flag -eq 0 ]]
+	then
+		centre=$(checkingCenter)
+		echo $centre
+	fi
 }
 
 function checkingOpponent(){
@@ -108,21 +122,21 @@ function checkingOpponent(){
 			flag=1
 			echo ${gameBoard[$(($i+4))]}
 			break
-		 elif [[ ${gameBoard[$i]} == "X" && ${gameBoard[$((i+4))]} == "X" ]]
-      then
-         flag=1
-         echo ${gameBoard[$(($i+8))]}
-      break
-      elif [[ ${gameBoard[$(($i+4))]} == "X" && ${gameBoard[$(($i+8))]} == "X" ]]
-      then
-         flag=1
-         echo ${gameBoard[$i]}
-         break
-      elif [[ ${gameBoard[$i]} == "X" && ${gameBoard[$(($i+8))]} == "X" ]]
-      then
-         flag=1
-         echo ${gameBoard[$(($i+4))]}
-         break
+		elif [[ ${gameBoard[$i]} == "X" && ${gameBoard[$((i+4))]} == "X" ]]
+		then
+			flag=1
+			echo ${gameBoard[$(($i+8))]}
+			break
+		elif [[ ${gameBoard[$(($i+4))]} == "X" && ${gameBoard[$(($i+8))]} == "X" ]]
+		then
+			flag=1
+			echo ${gameBoard[$i]}
+			break
+		elif [[ ${gameBoard[$i]} == "X" && ${gameBoard[$(($i+8))]} == "X" ]]
+		then
+			flag=1
+			echo ${gameBoard[$(($i+4))]}
+			break
 		fi
 	done
 
