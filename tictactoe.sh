@@ -39,6 +39,26 @@ function displayingBoard(){
 	echo "|_${gameBoard[6]}_|_${gameBoard[7]}_|_${gameBoard[8]}|"
 }
 
+function checkingCorners(){
+flag=0
+for((i=0 ;i<=8 ;i++))
+do
+	number=$((${gameBoard[$i]}%2))
+	if [[ $number -eq 1 && ${gameBoard[$i]} -ne 5 ]]
+	then
+		flag=1
+		echo ${gameBoard[$i]}
+		break
+	fi
+done
+
+if [[ flag -eq 0 ]]
+then
+	randomMove=$((RANDOM%9+1))
+	echo $randomMove
+fi
+}
+
 function checkingOpponent(){
 	flag=0
 	for((i=0; i<=8; i++))
@@ -103,14 +123,15 @@ function checkingOpponent(){
          flag=1
          echo ${gameBoard[$(($i+4))]}
          break
-
-	fi
+		fi
 	done
-if [[ $flag -eq 0 ]]
-then
-	randomCell=$((RANDOM%9+1))
-	echo $randomCell
-fi
+
+	if [[ flag -eq 0 ]]
+	then
+		corner=$(checkingCorners)
+		echo $corner
+	fi
+
 }
 
 function givingCellInput(){
