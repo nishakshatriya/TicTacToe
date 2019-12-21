@@ -6,7 +6,7 @@
  POSITIVE=2
 
 #variables
-turn=" "
+playerTurn=" "
 counter=0
 
 echo "Welcome to TIC-TAC-TOE Game"
@@ -24,10 +24,10 @@ function gettingSymbols(){
 	getSymbol=$((RANDOM%2))
 	if [ $getSymbol -eq 1 ]
 	then
-		turn="User"
+		playerTurn="User"
 		echo "Player got 'X' symbol & Player will start first!"
 	else
-		turn="Computer"
+		playerTurn="Computer"
 		echo "Computer got 'O' symbol & Computer will start first!"
 	fi
 }
@@ -45,8 +45,8 @@ function checkingSides(){
 	do
 		if [[ ${gameBoard[$i]} != "X" && ${gameBoard[$i]} != "O" ]]
 		then
-			number=$((${gameBoard[$i]}%2))
-			if [[ $number -eq 0 ]]
+			index=$((${gameBoard[$i]}%2))
+			if [[ $index -eq 0 ]]
 			then
 				flag=1
 				echo ${gameBoard[$i]}
@@ -74,10 +74,10 @@ function checkingCorners(){
 	flag=0
 	for((i=0 ;i<=8 ;i++))
 	do
-		number=$((${gameBoard[$i]}%2))
+		index=$((${gameBoard[$i]}%2))
 		if [[ ${gameBoard[$i]} != "X" && ${gameBoard[$i]} != "O" ]]
 		then
-			if [[ $number -eq 1 && ${gameBoard[$i]} -ne 5 ]]
+			if [[ $index -eq 1 && ${gameBoard[$i]} -ne 5 ]]
 			then
 				flag=1
 				echo ${gameBoard[$i]}
@@ -88,8 +88,8 @@ function checkingCorners(){
 
 	if [[ flag -eq 0 ]]
 	then
-		centre=$(checkingCenter)
-		echo $centre
+		centrePos=$(checkingCenter)
+		echo $centrePos
 	fi
 }
 
@@ -162,8 +162,8 @@ function checkingOpponent(){
 
 	if [[ flag -eq 0 ]]
 	then
-		corner=$(checkingCorners)
-		echo $corner
+		cornerPos=$(checkingCorners)
+		echo $cornerPos
 	fi
 
 }
@@ -179,7 +179,7 @@ function givingCellInput(){
 			counter=$(($counter+1))
 			displayingBoard
 		fi
-		turn="Computer"
+		playerTurn="Computer"
 	done
 }
 
@@ -192,11 +192,11 @@ function givingComputerInput(){
 		then
 			gameBoard[$(($cellNumber-1))]="O"
 			counter=$(($counter+1))
-			turn="User"
+			playerTurn="User"
 			displayingBoard
 			break
 		fi
-		turn="Computer"
+		playerTurn="Computer"
 	done
 }
 
@@ -264,7 +264,7 @@ function playingTicTacToe(){
 	counter=0
 	while [ $counter -ne 9 ]
 	do
-		if [[ $turn == "Computer" ]]
+		if [[ $playerTurn == "Computer" ]]
 		then
 			givingComputerInput
 		else
